@@ -274,35 +274,12 @@ def make_gaze(image,right_eye,left_eye,yaw, pitch, roll,eye_center_left,eye_cent
 @app.get('/Face_detection')
 def Face_Direction_V():
     cap = cv2.VideoCapture(0)
-    model_xml = r'models\face-detection-adas-0001\face-detection-adas-0001.xml'
-    model_bin = r'models\face-detection-adas-0001\face-detection-adas-0001.bin'
-    net = ie.read_network(model=model_xml, weights=model_bin)
-    exec_net = ie.load_network(network=net, device_name='CPU')
-    input_name = next(iter(net.input_info))
-    input_info = net.input_info[input_name]
-    n, c, h, w = input_info.tensor_desc.dims
-
-
-
     while True:
         # Read the next frame
         ret, frame = cap.read()
         if not ret:
             break
-        
-        # Resize the frame to match the input size of the model
-        resized_frame = cv2.resize(frame, (w, h))
-        input_data = resized_frame.transpose((2, 0, 1))
-
-        # Perform inference on the frame
-        output = exec_net.infer(inputs={input_name: input_data})
-
-        # Process the output data
-        output_name = next(iter(net.outputs))
-        output_data = output[output_name]
-        boxes = output_data[0][0]  # Assuming a single image was processed
-
-        # Loop through the detected faces and draw bounding boxes on the frame
+   
         Number_Of_Faces = 0
         for box in boxes:
             confidence = box[2]
