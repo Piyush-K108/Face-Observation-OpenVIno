@@ -274,7 +274,8 @@ def make_gaze(image,right_eye,left_eye,yaw, pitch, roll,eye_center_left,eye_cent
 @app.get('/Face_detection')
 def Face_Direction_V():
     cap = cv2.VideoCapture(0)
-    while True:
+    count = 0
+    while count<4:
         # Read the next frame
         ret, frame = cap.read()
         if not ret:
@@ -301,11 +302,9 @@ def Face_Direction_V():
                 eye_center_right = (int((third[0] + third[1]) / 2), int((fourth[0] + fourth[1]) / 2))
                 gaze_center, gaze_vector = make_gaze(frame, right_eye_image, left_eye_image, yaw, pitch, roll, eye_center_left, eye_center_right)
                 gaze_direction = head_pose_direction(gaze_vector)
-                elapsed_time = time.time() - start_time
-                if elapsed_time > 3:
-                  break
                 yield {"Direction" : gaze_direction}
-
+                count+=1
+                
 
     cap.release()
     cv2.destroyAllWindows()
