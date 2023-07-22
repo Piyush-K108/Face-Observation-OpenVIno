@@ -12,7 +12,6 @@ import time
 app = FastAPI()
 
 ie = IECore()
-
 start_time = time.time()
 
 cap = cv2.VideoCapture(0)
